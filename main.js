@@ -370,7 +370,7 @@ module.exports = "import {Component, ElementRef, HostListener, Inject, OnDestroy
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<button seb-btn>Primary</button>\n<button seb-btn outline>Outlined</button>\n<button seb-btn=\"secondary\">Secondary</button>\n<button seb-btn=\"light\">Light</button>\n<button seb-btn=\"link\">Link</button>\n<button seb-btn size=\"sm\">Primary</button>\n<button seb-btn size=\"sm\" disabled=\"true\">Disabled</button>\n\n"
+module.exports = "<!--\ntitle: Buttons\ncomponentid: component-button\nvariantid: component-button-all\nurl: https://sebgroup.github.io/ng-components/components/buttons/examples\n-->\n\n<button seb-btn>Primary</button>\n<button seb-btn outline>Outlined</button>\n<button seb-btn=\"secondary\">Secondary</button>\n<button seb-btn=\"light\">Light</button>\n<button seb-btn=\"link\">Link</button>\n<button seb-btn size=\"sm\">Primary</button>\n<button seb-btn size=\"sm\" disabled=\"true\">Disabled</button>\n"
 
 /***/ }),
 
@@ -392,7 +392,7 @@ module.exports = "import { Component, OnInit } from '@angular/core';\n\n@Compone
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal\" tabindex=\"-1\" role=\"dialog\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\">Modal title</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <p>Modal body text goes here.</p>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<!--\ntitle: Modal\ncomponentid: component-modal\nvariantid: component-modal-default\nurl: https://sebgroup.github.io/ng-components/components/buttons/examples\n-->\n\n<div class=\"modal\" tabindex=\"-1\" role=\"dialog\">\n  <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h5 class=\"modal-title\">Modal title</h5>\n        <button\n          type=\"button\"\n          class=\"close\"\n          data-dismiss=\"modal\"\n          aria-label=\"Close\"\n        >\n          <span aria-hidden=\"true\">&times;</span>\n        </button>\n      </div>\n      <div class=\"modal-body\">\n        <p>Modal body text goes here.</p>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">\n          Close\n        </button>\n        <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 

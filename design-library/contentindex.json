@@ -1,0 +1,42 @@
+{
+	"structure": [
+		{
+			"filename": "component-button.md",
+			"filepath": "/ng-components-docs/design-library/component-button.md",
+			"shortpath": "/ng-components-docs/design-library/component-button",
+			"longpath": "/ng-components-docs/design-library/component-button.md",
+			"type": "file",
+			"title": {
+				"[object Object]": null
+			},
+			"componentid": {
+				"[object Object]": null
+			},
+			"variantid": {
+				"[object Object]": null
+			},
+			"guid": {
+				"[object Object]": null
+			}
+		},
+		{
+			"filename": "component-modal.md",
+			"filepath": "/ng-components-docs/design-library/component-modal.md",
+			"shortpath": "/ng-components-docs/design-library/component-modal",
+			"longpath": "/ng-components-docs/design-library/component-modal.md",
+			"type": "file",
+			"title": {
+				"[object Object]": null
+			},
+			"componentid": {
+				"[object Object]": null
+			},
+			"variantid": {
+				"[object Object]": null
+			},
+			"guid": {
+				"[object Object]": null
+			}
+		}
+	]
+}
