@@ -283,6 +283,1000 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "../../lib/src/core/focus/focus.trap.ts":
+/*!**********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/core/focus/focus.trap.ts ***!
+  \**********************************************************************************/
+/*! exports provided: FocusTrap, FocusTrapFactory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusTrap", function() { return FocusTrap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FocusTrapFactory", function() { return FocusTrapFactory; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+
+
+
+const FOCUSABLE_ELEMENTS_SELECTOR = [
+    'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])', 'select:not([disabled])',
+    'textarea:not([disabled])', '[contenteditable]', '[tabindex]:not([tabindex="-1"])'
+].join(', ');
+class FocusTrap {
+    constructor(body, previousFocusedElement) {
+        this.body = body;
+        this.previousFocusedElement = previousFocusedElement;
+    }
+    restoreFocus() {
+        if (this.previousFocusedElement &&
+            this.previousFocusedElement['focus'] &&
+            this.body.contains(this.previousFocusedElement)) {
+            this.previousFocusedElement.focus();
+        }
+        else {
+            this.body.focus();
+        }
+    }
+}
+let FocusTrapFactory = class FocusTrapFactory {
+    constructor(document) {
+        this.document = document;
+    }
+    trapFocus(element, enableAutoFocus = true) {
+        const previousFocusedEl = this.document.activeElement;
+        if (element.contains(previousFocusedEl)) {
+            return null;
+        }
+        let focusedEl;
+        if (enableAutoFocus) {
+            const autoFocusEl = element.querySelector('[sebAutoFocus]');
+            if (autoFocusEl) {
+                focusedEl = autoFocusEl;
+            }
+        }
+        focusedEl = focusedEl || this._getFirstFocusableElement(element) || element;
+        focusedEl.focus();
+        return new FocusTrap(this.document.body, previousFocusedEl);
+    }
+    _getFirstFocusableElement(element) {
+        const elements = Array.from(element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR))
+            .filter((el) => el.tabIndex !== -1);
+        return elements[0];
+    }
+};
+FocusTrapFactory.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"],] }] }
+];
+FocusTrapFactory = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({ providedIn: 'root' }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"])),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Object])
+], FocusTrapFactory);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/index.ts":
+/*!************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/index.ts ***!
+  \************************************************************************/
+/*! exports provided: SebModalModule, SebModalInjector, SEB_MODAL_DATA, SEB_DEFAULT_CONFIG, SebModalService, SebModal, SebModalRef, SebModalBackdrop */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _public_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./public_api */ "../../lib/src/modal/public_api.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalModule", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModalModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalInjector", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModalInjector"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEB_MODAL_DATA", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SEB_MODAL_DATA"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEB_DEFAULT_CONFIG", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SEB_DEFAULT_CONFIG"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalService", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModalService"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModal", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalRef", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModalRef"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalBackdrop", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebModalBackdrop"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.backdrop.ts":
+/*!*********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.backdrop.ts ***!
+  \*********************************************************************************/
+/*! exports provided: SebModalBackdrop */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalBackdrop", function() { return SebModalBackdrop; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+
+
+let SebModalBackdrop = class SebModalBackdrop {
+};
+SebModalBackdrop = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        template: '',
+        host: { '[class]': '"modal-backdrop fade show"' }
+    })
+], SebModalBackdrop);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.directives.ts":
+/*!***********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.directives.ts ***!
+  \***********************************************************************************/
+/*! exports provided: SebModalTitle, SebModalHeader, SebModalBody, SebModalFooter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalTitle", function() { return SebModalTitle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalHeader", function() { return SebModalHeader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalBody", function() { return SebModalBody; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalFooter", function() { return SebModalFooter; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+
+
+let SebModalTitle = class SebModalTitle {
+};
+SebModalTitle = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
+        selector: '[sebModalTitle]',
+        host: {
+            '[class]': '"modal-title"'
+        }
+    })
+], SebModalTitle);
+
+let SebModalHeader = class SebModalHeader {
+};
+SebModalHeader = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
+        selector: 'seb-modal-header, [sebModalHeader]',
+        host: {
+            '[class]': '"modal-header"'
+        }
+    })
+], SebModalHeader);
+
+let SebModalBody = class SebModalBody {
+};
+SebModalBody = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
+        selector: 'seb-modal-body, [sebModalBody]',
+        host: {
+            '[class]': '"modal-body"',
+            'style': 'display:block;'
+        }
+    })
+], SebModalBody);
+
+let SebModalFooter = class SebModalFooter {
+};
+SebModalFooter = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
+        selector: 'seb-modal-footer, [sebModalFooter]',
+        host: {
+            '[class]': '"modal-footer"'
+        }
+    })
+], SebModalFooter);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.injector.ts":
+/*!*********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.injector.ts ***!
+  \*********************************************************************************/
+/*! exports provided: SebModalInjector */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalInjector", function() { return SebModalInjector; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+
+class SebModalInjector {
+    constructor(injector, tokens) {
+        this.injector = injector;
+        this.tokens = tokens;
+    }
+    get(token, notFoundValue) {
+        const value = this.tokens.get(token);
+        if (typeof value !== 'undefined') {
+            return value;
+        }
+        return this.injector.get(token, notFoundValue);
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.module.ts":
+/*!*******************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.module.ts ***!
+  \*******************************************************************************/
+/*! exports provided: SebModalModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalModule", function() { return SebModalModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modal */ "../../lib/src/modal/modal.ts");
+/* harmony import */ var _modal_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modal.service */ "../../lib/src/modal/modal.service.ts");
+/* harmony import */ var _modal_backdrop__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modal.backdrop */ "../../lib/src/modal/modal.backdrop.ts");
+/* harmony import */ var _modal_directives__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modal.directives */ "../../lib/src/modal/modal.directives.ts");
+
+
+
+
+
+
+
+let SebModalModule = class SebModalModule {
+};
+SebModalModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"]],
+        declarations: [
+            _modal__WEBPACK_IMPORTED_MODULE_3__["SebModal"],
+            _modal_backdrop__WEBPACK_IMPORTED_MODULE_5__["SebModalBackdrop"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalTitle"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalHeader"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalBody"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalFooter"]
+        ],
+        exports: [
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalTitle"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalHeader"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalBody"],
+            _modal_directives__WEBPACK_IMPORTED_MODULE_6__["SebModalFooter"]
+        ],
+        entryComponents: [
+            _modal__WEBPACK_IMPORTED_MODULE_3__["SebModal"],
+            _modal_backdrop__WEBPACK_IMPORTED_MODULE_5__["SebModalBackdrop"]
+        ],
+        providers: [
+            _modal_service__WEBPACK_IMPORTED_MODULE_4__["SebModalService"]
+        ]
+    })
+], SebModalModule);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.ref.ts":
+/*!****************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.ref.ts ***!
+  \****************************************************************************/
+/*! exports provided: SebModalRef */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalRef", function() { return SebModalRef; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm2015/index.js");
+
+
+
+class SebModalRef {
+    constructor(location, config) {
+        this.location = location;
+        this.config = config;
+        this.onClose$ = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this._locationChanges = rxjs__WEBPACK_IMPORTED_MODULE_2__["Subscription"].EMPTY;
+        if (this.config && this.config.closeOnNavigationChanges) {
+            this._locationChanges = this.location
+                .subscribe(() => this.close());
+        }
+    }
+    close() {
+        this._destroy();
+    }
+    dismiss(reason) {
+        this._destroy(reason);
+    }
+    _destroy(reason) {
+        this._locationChanges.unsubscribe();
+        this.onClose$.next(reason);
+    }
+}
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.service.ts":
+/*!********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.service.ts ***!
+  \********************************************************************************/
+/*! exports provided: SEB_MODAL_DATA, SEB_DEFAULT_CONFIG, SebModalService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEB_MODAL_DATA", function() { return SEB_MODAL_DATA; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SEB_DEFAULT_CONFIG", function() { return SEB_DEFAULT_CONFIG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModalService", function() { return SebModalService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _modal_injector__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal.injector */ "../../lib/src/modal/modal.injector.ts");
+/* harmony import */ var _modal_ref__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modal.ref */ "../../lib/src/modal/modal.ref.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modal */ "../../lib/src/modal/modal.ts");
+/* harmony import */ var _modal_backdrop__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modal.backdrop */ "../../lib/src/modal/modal.backdrop.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm2015/operators/index.js");
+
+
+
+
+
+
+
+
+const SEB_MODAL_DATA = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["InjectionToken"]('SebModalData');
+const SEB_DEFAULT_CONFIG = ({
+    type: null,
+    closable: true,
+    closeOnNavigationChanges: true,
+    data: null,
+    classes: null
+});
+let SebModalService = class SebModalService {
+    constructor(injector, appRef, rendererFactory, cmpFactoryResolver, location, document) {
+        this.injector = injector;
+        this.appRef = appRef;
+        this.rendererFactory = rendererFactory;
+        this.cmpFactoryResolver = cmpFactoryResolver;
+        this.location = location;
+        this.document = document;
+    }
+    open(cmp, config = {}) {
+        config = Object.assign({}, SEB_DEFAULT_CONFIG, config);
+        const modalRef = new _modal_ref__WEBPACK_IMPORTED_MODULE_3__["SebModalRef"](this.location, config);
+        const cmpRef = this._getCmpRef(cmp, this._getInjector(modalRef, config.data));
+        const modalCmpRef = this._getCmpRef(_modal__WEBPACK_IMPORTED_MODULE_5__["SebModal"], this.injector, [[cmpRef.location.nativeElement]]);
+        const backdropCmpRef = this._getCmpRef(_modal_backdrop__WEBPACK_IMPORTED_MODULE_6__["SebModalBackdrop"], this.injector);
+        modalCmpRef.instance.modalRef = modalRef;
+        this._attachToView(modalCmpRef);
+        this._attachToView(backdropCmpRef);
+        const renderer = this._getRenderer();
+        renderer.addClass(cmpRef.location.nativeElement, 'modal-content');
+        renderer.setStyle(this.document.body, 'overflow', 'hidden');
+        renderer.addClass(this.document.body, 'modal-open');
+        modalRef.onClose$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["take"])(1)).subscribe(() => {
+            renderer.removeStyle(this.document.body, 'overflow');
+            renderer.removeClass(this.document.body, 'modal-open');
+            this._detachFromView(modalCmpRef);
+            this._detachFromView(backdropCmpRef);
+            [modalCmpRef, backdropCmpRef, cmpRef]
+                .forEach(cmRef => {
+                cmRef.destroy();
+                cmRef = null;
+            });
+        });
+        return modalRef;
+    }
+    _getRenderer() {
+        return this.rendererFactory.createRenderer(null, null);
+    }
+    _attachToView(cmpRef) {
+        const root = this.document.body;
+        root.appendChild(cmpRef.location.nativeElement);
+    }
+    _detachFromView(cmpRef) {
+        const el = cmpRef.location.nativeElement;
+        el.parentNode.removeChild(el);
+    }
+    _getInjector(modalRef, data) {
+        const tokens = new WeakMap();
+        tokens.set(SEB_MODAL_DATA, data);
+        tokens.set(_modal_ref__WEBPACK_IMPORTED_MODULE_3__["SebModalRef"], modalRef);
+        return new _modal_injector__WEBPACK_IMPORTED_MODULE_2__["SebModalInjector"](this.injector, tokens);
+    }
+    _getCmpRef(cmp, injector, projectableNodes) {
+        const cmpFactory = this.cmpFactoryResolver.resolveComponentFactory(cmp);
+        const cmpRef = cmpFactory.create(injector, projectableNodes);
+        this.appRef.attachView(cmpRef.hostView);
+        return cmpRef;
+    }
+};
+SebModalService.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Injector"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ApplicationRef"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["RendererFactory2"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ComponentFactoryResolver"] },
+    { type: _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"] },
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"],] }] }
+];
+SebModalService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({ providedIn: 'root' }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](5, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_4__["DOCUMENT"])),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injector"],
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ApplicationRef"],
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["RendererFactory2"],
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ComponentFactoryResolver"],
+        _angular_common__WEBPACK_IMPORTED_MODULE_4__["Location"], Object])
+], SebModalService);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/modal.ts":
+/*!************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/modal.ts ***!
+  \************************************************************************/
+/*! exports provided: SebModal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebModal", function() { return SebModal; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _core_focus_focus_trap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/focus/focus.trap */ "../../lib/src/core/focus/focus.trap.ts");
+
+
+
+
+let SebModal = class SebModal {
+    constructor(elementRef, focusTrapFactory, document) {
+        this.elementRef = elementRef;
+        this.focusTrapFactory = focusTrapFactory;
+        this.document = document;
+    }
+    onEscKey() { this._close(); }
+    ;
+    onBackdropClick(target) {
+        if (this.elementRef.nativeElement !== target) {
+            return;
+        }
+        this._close();
+    }
+    ngOnInit() {
+        this.focusTrap
+            = this.focusTrapFactory.trapFocus(this.elementRef.nativeElement);
+    }
+    _close() {
+        if (this.modalRef &&
+            this.modalRef.config &&
+            this.modalRef.config.closable) {
+            this.modalRef.close();
+        }
+    }
+    ngOnDestroy() {
+        if (this.focusTrap) {
+            this.focusTrap.restoreFocus();
+        }
+    }
+};
+SebModal.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"] },
+    { type: _core_focus_focus_trap__WEBPACK_IMPORTED_MODULE_3__["FocusTrapFactory"] },
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"], args: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"],] }] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('keyup.esc'),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Function),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", []),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:returntype", void 0)
+], SebModal.prototype, "onEscKey", null);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["HostListener"])('click', ['$event.target']),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Function),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Object]),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:returntype", void 0)
+], SebModal.prototype, "onBackdropClick", null);
+SebModal = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./modal.html */ "../../node_modules/raw-loader/index.js!../../lib/src/modal/modal.html")).default,
+        host: {
+            '[class]': '"modal fade show d-block"',
+            '[class.modal-fullscreen]': 'modalRef?.config?.type === "fullscreen"',
+            '[class.modal-aside]': 'modalRef?.config?.type === "aside-left" || modalRef?.config?.type === "aside-right"',
+            '[class.modal-aside-left]': 'modalRef?.config?.type === "aside-left"',
+            '[class.modal-aside-right]': 'modalRef?.config?.type === "aside-right"',
+            'tabindex': '-1',
+            'role': 'dialog'
+        }
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](2, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_common__WEBPACK_IMPORTED_MODULE_2__["DOCUMENT"])),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"],
+        _core_focus_focus_trap__WEBPACK_IMPORTED_MODULE_3__["FocusTrapFactory"], Object])
+], SebModal);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/modal/public_api.ts":
+/*!*****************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/modal/public_api.ts ***!
+  \*****************************************************************************/
+/*! exports provided: SebModalModule, SebModalInjector, SEB_MODAL_DATA, SEB_DEFAULT_CONFIG, SebModalService, SebModal, SebModalRef, SebModalBackdrop */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _modal_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal.module */ "../../lib/src/modal/modal.module.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalModule", function() { return _modal_module__WEBPACK_IMPORTED_MODULE_1__["SebModalModule"]; });
+
+/* harmony import */ var _modal_injector__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal.injector */ "../../lib/src/modal/modal.injector.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalInjector", function() { return _modal_injector__WEBPACK_IMPORTED_MODULE_2__["SebModalInjector"]; });
+
+/* harmony import */ var _modal_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modal.service */ "../../lib/src/modal/modal.service.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEB_MODAL_DATA", function() { return _modal_service__WEBPACK_IMPORTED_MODULE_3__["SEB_MODAL_DATA"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SEB_DEFAULT_CONFIG", function() { return _modal_service__WEBPACK_IMPORTED_MODULE_3__["SEB_DEFAULT_CONFIG"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalService", function() { return _modal_service__WEBPACK_IMPORTED_MODULE_3__["SebModalService"]; });
+
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modal */ "../../lib/src/modal/modal.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModal", function() { return _modal__WEBPACK_IMPORTED_MODULE_4__["SebModal"]; });
+
+/* harmony import */ var _modal_ref__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modal.ref */ "../../lib/src/modal/modal.ref.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalRef", function() { return _modal_ref__WEBPACK_IMPORTED_MODULE_5__["SebModalRef"]; });
+
+/* harmony import */ var _modal_backdrop__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modal.backdrop */ "../../lib/src/modal/modal.backdrop.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebModalBackdrop", function() { return _modal_backdrop__WEBPACK_IMPORTED_MODULE_6__["SebModalBackdrop"]; });
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/index.ts":
+/*!*************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/index.ts ***!
+  \*************************************************************************/
+/*! exports provided: SebWizardModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _public_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./public_api */ "../../lib/src/wizard/public_api.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebWizardModule", function() { return _public_api__WEBPACK_IMPORTED_MODULE_1__["SebWizardModule"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/public_api.ts":
+/*!******************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/public_api.ts ***!
+  \******************************************************************************/
+/*! exports provided: SebWizardModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _wizard_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wizard.module */ "../../lib/src/wizard/wizard.module.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SebWizardModule", function() { return _wizard_module__WEBPACK_IMPORTED_MODULE_1__["SebWizardModule"]; });
+
+
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/wizard-step-label.directive.ts":
+/*!***********************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard-step-label.directive.ts ***!
+  \***********************************************************************************************/
+/*! exports provided: SebWizardStepLabelDirective, SebWizardStepLabelDescDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardStepLabelDirective", function() { return SebWizardStepLabelDirective; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardStepLabelDescDirective", function() { return SebWizardStepLabelDescDirective; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+
+
+let SebWizardStepLabelDirective = class SebWizardStepLabelDirective {
+    constructor(template) {
+        this.template = template;
+    }
+};
+SebWizardStepLabelDirective.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"] }
+];
+SebWizardStepLabelDirective = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({ selector: '[sebWizardStepLabel]' }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]])
+], SebWizardStepLabelDirective);
+
+let SebWizardStepLabelDescDirective = class SebWizardStepLabelDescDirective {
+    constructor(template) {
+        this.template = template;
+    }
+};
+SebWizardStepLabelDescDirective.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"] }
+];
+SebWizardStepLabelDescDirective = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({ selector: '[sebWizardStepLabelDesc]' }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]])
+], SebWizardStepLabelDescDirective);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/wizard-step.component.ts":
+/*!*****************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard-step.component.ts ***!
+  \*****************************************************************************************/
+/*! exports provided: SebWizardStepComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardStepComponent", function() { return SebWizardStepComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wizard-step-label.directive */ "../../lib/src/wizard/wizard-step-label.directive.ts");
+
+
+
+let SebWizardStepComponent = class SebWizardStepComponent {
+    constructor() {
+        this.hideFromNavigation = false;
+        this._interacted = false;
+        this._completed = null;
+    }
+    get interacted() {
+        return this._interacted;
+    }
+    set interacted(value) {
+        this._interacted = `${value}` === 'true';
+    }
+    get completed() {
+        return this._completed === null
+            ? this.stepControl
+                ? this.stepControl.valid && this.interacted
+                : this.interacted
+            : this._completed;
+    }
+    set completed(value) {
+        this._completed = `${value}` === 'true';
+    }
+    reset() {
+        this._interacted = false;
+        this._completed = null;
+        if (this.stepControl) {
+            this.stepControl.reset();
+        }
+    }
+};
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChild"])(_wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardStepLabelDirective"], { static: true }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardStepLabelDirective"])
+], SebWizardStepComponent.prototype, "wizardStepLabel", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChild"])(_wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardStepLabelDescDirective"], { static: false }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardStepLabelDescDirective"])
+], SebWizardStepComponent.prototype, "wizardStepLabelDesc", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])(_angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"], { static: true }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"])
+], SebWizardStepComponent.prototype, "wizardStepContent", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean)
+], SebWizardStepComponent.prototype, "hideFromNavigation", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+], SebWizardStepComponent.prototype, "stepControl", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Boolean])
+], SebWizardStepComponent.prototype, "interacted", null);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Boolean])
+], SebWizardStepComponent.prototype, "completed", null);
+SebWizardStepComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'div[seb-wizard-step], seb-wizard-step',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./wizard-step.component.html */ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard-step.component.html")).default,
+        changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectionStrategy"].OnPush,
+    })
+], SebWizardStepComponent);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/wizard-title.directive.ts":
+/*!******************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard-title.directive.ts ***!
+  \******************************************************************************************/
+/*! exports provided: SebWizardTitleDirective */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardTitleDirective", function() { return SebWizardTitleDirective; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+
+
+let SebWizardTitleDirective = class SebWizardTitleDirective {
+    constructor(template) {
+        this.template = template;
+    }
+};
+SebWizardTitleDirective.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"] }
+];
+SebWizardTitleDirective = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Directive"])({
+        selector: '[sebWizardTitle]',
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]])
+], SebWizardTitleDirective);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/wizard.component.ts":
+/*!************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard.component.ts ***!
+  \************************************************************************************/
+/*! exports provided: SebWizardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardComponent", function() { return SebWizardComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _wizard_title_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./wizard-title.directive */ "../../lib/src/wizard/wizard-title.directive.ts");
+/* harmony import */ var _wizard_step_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wizard-step.component */ "../../lib/src/wizard/wizard-step.component.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "../../node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "../../node_modules/rxjs/_esm2015/operators/index.js");
+
+
+
+
+
+
+let SebWizardComponent = class SebWizardComponent {
+    constructor(_changeDetectorRef) {
+        this._changeDetectorRef = _changeDetectorRef;
+        this._ngOnDestroy$ = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.onChanges = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.hideNavigation = false;
+        this.disableNavigation = false;
+        this._selectedIndex = 0;
+        this._stepWise = false;
+    }
+    get selectedIndex() {
+        return this._selectedIndex;
+    }
+    set selectedIndex(index) {
+        if (this.wizardSteps) {
+            if (this._validIndex(index) && this._validStepControl(index)) {
+                this._emitChanges(index);
+                this._selectedIndex = index;
+                this._changeDetectorRef.markForCheck();
+            }
+        }
+        else {
+            this._selectedIndex = index;
+        }
+    }
+    get stepWise() {
+        return this._stepWise;
+    }
+    set stepWise(value) {
+        this._stepWise = `${value}` !== 'false';
+    }
+    select(wizardStep) {
+        if (!this.disableNavigation) {
+            this.selectedIndex = this.wizardSteps.toArray().indexOf(wizardStep);
+        }
+    }
+    reset() {
+        this.selectedIndex = 0;
+        this.wizardSteps.forEach((step) => step.reset());
+        this._changeDetectorRef.markForCheck();
+    }
+    next() {
+        this.selectedIndex = Math.min(this.selectedIndex + 1, this.wizardSteps.length - 1);
+    }
+    previous() {
+        this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+    }
+    _validIndex(index) {
+        if (index < 0 || index > this.wizardSteps.length - 1) {
+            throw Error('SebWizard: selected index is out of bounds');
+        }
+        return this._selectedIndex !== index;
+    }
+    _validStepControl(index) {
+        const wizardSteps = this.wizardSteps.toArray();
+        wizardSteps[this.selectedIndex].interacted = true;
+        if (this.stepWise) {
+            return !wizardSteps
+                .slice(0, index)
+                .some((wizardStep) => {
+                const { stepControl } = wizardStep;
+                return stepControl
+                    ? !stepControl.valid ||
+                        stepControl.pending ||
+                        !wizardStep.interacted
+                    : !wizardStep.completed;
+            });
+        }
+        return true;
+    }
+    disabledWizardStep(index) {
+        return !this._validStepControl(index);
+    }
+    _emitChanges(index) {
+        const wizardSteps = this.wizardSteps.toArray();
+        this.onChanges.emit({
+            selectedIndex: index,
+            previousIndex: this.selectedIndex,
+            selectedStep: wizardSteps[index],
+            previousStep: wizardSteps[this.selectedIndex],
+        });
+    }
+    ngAfterContentInit() {
+        this.wizardSteps.changes
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["takeUntil"])(this._ngOnDestroy$))
+            .subscribe(() => this._changeDetectorRef.markForCheck());
+    }
+    ngOnDestroy() {
+        this._ngOnDestroy$.next();
+        this._ngOnDestroy$.complete();
+    }
+};
+SebWizardComponent.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChild"])(_wizard_title_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardTitleDirective"], { static: true }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _wizard_title_directive__WEBPACK_IMPORTED_MODULE_2__["SebWizardTitleDirective"])
+], SebWizardComponent.prototype, "wizardTitle", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ContentChildren"])(_wizard_step_component__WEBPACK_IMPORTED_MODULE_3__["SebWizardStepComponent"]),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["QueryList"])
+], SebWizardComponent.prototype, "wizardSteps", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"])
+], SebWizardComponent.prototype, "onChanges", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean)
+], SebWizardComponent.prototype, "hideNavigation", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean)
+], SebWizardComponent.prototype, "disableNavigation", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Number),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Number])
+], SebWizardComponent.prototype, "selectedIndex", null);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Boolean),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [Boolean])
+], SebWizardComponent.prototype, "stepWise", null);
+SebWizardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'div[seb-wizard], seb-wizard',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./wizard.component.html */ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard.component.html")).default,
+        host: {
+            class: 'd-flex flex-column flex-md-row flex-md-row w-100 h-100 border',
+        },
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"]])
+], SebWizardComponent);
+
+
+
+/***/ }),
+
+/***/ "../../lib/src/wizard/wizard.module.ts":
+/*!*********************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard.module.ts ***!
+  \*********************************************************************************/
+/*! exports provided: SebWizardModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SebWizardModule", function() { return SebWizardModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _wizard_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wizard.component */ "../../lib/src/wizard/wizard.component.ts");
+/* harmony import */ var _wizard_title_directive__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./wizard-title.directive */ "../../lib/src/wizard/wizard-title.directive.ts");
+/* harmony import */ var _wizard_step_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./wizard-step.component */ "../../lib/src/wizard/wizard-step.component.ts");
+/* harmony import */ var _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./wizard-step-label.directive */ "../../lib/src/wizard/wizard-step-label.directive.ts");
+
+
+
+
+
+
+
+let SebWizardModule = class SebWizardModule {
+};
+SebWizardModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"]],
+        declarations: [
+            _wizard_component__WEBPACK_IMPORTED_MODULE_3__["SebWizardComponent"],
+            _wizard_title_directive__WEBPACK_IMPORTED_MODULE_4__["SebWizardTitleDirective"],
+            _wizard_step_component__WEBPACK_IMPORTED_MODULE_5__["SebWizardStepComponent"],
+            _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_6__["SebWizardStepLabelDirective"],
+            _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_6__["SebWizardStepLabelDescDirective"],
+        ],
+        exports: [
+            _wizard_component__WEBPACK_IMPORTED_MODULE_3__["SebWizardComponent"],
+            _wizard_title_directive__WEBPACK_IMPORTED_MODULE_4__["SebWizardTitleDirective"],
+            _wizard_step_component__WEBPACK_IMPORTED_MODULE_5__["SebWizardStepComponent"],
+            _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_6__["SebWizardStepLabelDirective"],
+            _wizard_step_label_directive__WEBPACK_IMPORTED_MODULE_6__["SebWizardStepLabelDescDirective"],
+        ],
+    })
+], SebWizardModule);
+
+
+
+/***/ }),
+
 /***/ "../../node_modules/raw-loader/index.js!../../lib/src/button/button.ts":
 /*!********************************************************************************************************************************************!*\
   !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/button/button.ts ***!
@@ -316,6 +1310,17 @@ module.exports = "import {Directive} from '@angular/core';\n\n@Directive({\n  se
 
 /***/ }),
 
+/***/ "../../node_modules/raw-loader/index.js!../../lib/src/modal/modal.html":
+/*!********************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/modal/modal.html ***!
+  \********************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"modal-dialog\" role=\"document\">\n    <ng-content></ng-content>\n</div>\n"
+
+/***/ }),
+
 /***/ "../../node_modules/raw-loader/index.js!../../lib/src/modal/modal.service.ts":
 /*!**************************************************************************************************************************************************!*\
   !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/modal/modal.service.ts ***!
@@ -335,6 +1340,39 @@ module.exports = "import {\n  ApplicationRef,\n  ComponentFactory, ComponentFact
 /***/ (function(module, exports) {
 
 module.exports = "import {Component, ElementRef, HostListener, Inject, OnDestroy, OnInit} from '@angular/core';\nimport {SebModalRef} from './modal.ref';\nimport {DOCUMENT} from '@angular/common';\nimport {FocusTrap, FocusTrapFactory} from '../core/focus/focus.trap';\n\n\n@Component({\n  templateUrl: 'modal.html',\n  host: {\n    '[class]': '\"modal fade show d-block\"',\n    '[class.modal-fullscreen]': 'modalRef?.config?.type === \"fullscreen\"',\n    '[class.modal-aside]': 'modalRef?.config?.type === \"aside-left\" || modalRef?.config?.type === \"aside-right\"',\n    '[class.modal-aside-left]': 'modalRef?.config?.type === \"aside-left\"',\n    '[class.modal-aside-right]': 'modalRef?.config?.type === \"aside-right\"',\n    'tabindex': '-1',\n    'role': 'dialog'\n  }\n})\nexport class SebModal implements OnInit, OnDestroy {\n\n  private focusTrap: FocusTrap;\n  public modalRef: SebModalRef;\n\n  constructor(\n    private elementRef: ElementRef,\n    private focusTrapFactory: FocusTrapFactory,\n    @Inject(DOCUMENT) private document) { }\n\n  @HostListener('keyup.esc') onEscKey() { this._close(); };\n  @HostListener('click', ['$event.target']) onBackdropClick(target) {\n    if (this.elementRef.nativeElement !== target) { return; }\n    this._close();\n  }\n\n  ngOnInit(): void {\n    this.focusTrap\n      = this.focusTrapFactory.trapFocus(this.elementRef.nativeElement);\n  }\n\n  private _close() {\n    if (\n      this.modalRef &&\n      this.modalRef.config &&\n      this.modalRef.config.closable) {\n        this.modalRef.close();\n    }\n  }\n\n  ngOnDestroy(): void {\n    if (this.focusTrap) {\n      this.focusTrap.restoreFocus();\n    }\n  }\n}\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard-step.component.html":
+/*!*************************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard-step.component.html ***!
+  \*************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ng-template>\n  <ng-content></ng-content>\n</ng-template>\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard.component.html":
+/*!********************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard.component.html ***!
+  \********************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<nav class=\"p-3 bg-light\" style=\"min-width: 200px\">\n  <ng-container\n    *ngIf=\"wizardTitle\"\n    [ngTemplateOutlet]=\"wizardTitle!.template\"\n  ></ng-container>\n  <ol\n    class=\"list-group list-group-ordered d-none d-md-block mt-2\"\n    *ngIf=\"!hideNavigation\"\n  >\n    <ng-container *ngFor=\"let wizardStep of wizardSteps; let i = index\">\n      <li\n        class=\"list-group-item-action\"\n        (click)=\"select(wizardStep)\"\n        *ngIf=\"!wizardStep!.hideFromNavigation\"\n        [attr.tabindex]=\"i\"\n        [class.active]=\"i === selectedIndex\"\n        [class.disabled]=\"disabledWizardStep(i)\"\n        [class.list-group-item-success]=\"\n          wizardStep.completed || wizardStep.interacted\n        \"\n      >\n        <ng-container\n          *ngIf=\"wizardStep.wizardStepLabel\"\n          [ngTemplateOutlet]=\"wizardStep!.wizardStepLabel!.template\"\n        ></ng-container>\n      </li>\n    </ng-container>\n  </ol>\n  <ng-container *ngFor=\"let wizardStep of wizardSteps; let i = index\">\n    <div\n      class=\"d-xs-block d-sm-block d-md-none\"\n      *ngIf=\"!wizardStep!.hideFromNavigation && i === selectedIndex\"\n    >\n      <div class=\"h3 mb-0 mt-2\">\n        <ng-container\n          *ngIf=\"wizardStep.wizardStepLabel\"\n          [ngTemplateOutlet]=\"wizardStep!.wizardStepLabel!.template\"\n        ></ng-container>\n      </div>\n      <ng-container *ngIf=\"wizardStep.wizardStepLabelDesc\">\n        <div class=\"text-muted\">\n          <ng-container\n            [ngTemplateOutlet]=\"wizardStep!.wizardStepLabelDesc!.template\"\n            [ngTemplateOutletContext]=\"{\n              $implicit: { currentStep: i + 1, totalSteps: wizardSteps?.length }\n            }\"\n          ></ng-container>\n        </div>\n      </ng-container>\n    </div>\n  </ng-container>\n</nav>\n<ng-container *ngFor=\"let wizardStep of wizardSteps; let i = index\">\n  <section\n    [ngClass]=\"selectedIndex === i && 'p-3 bg-white flex-grow-1'\"\n    [ngStyle]=\"\n      selectedIndex !== i && { height: '0', width: '0', overflow: 'hidden' }\n    \"\n  >\n    <ng-container\n      [ngTemplateOutlet]=\"wizardStep?.wizardStepContent\"\n    ></ng-container>\n  </section>\n</ng-container>\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard.module.ts":
+/*!***************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!/home/travis/build/sebgroup/ng-components/lib/src/wizard/wizard.module.ts ***!
+  \***************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SebWizardComponent } from './wizard.component';\nimport { SebWizardTitleDirective } from './wizard-title.directive';\nimport { SebWizardStepComponent } from './wizard-step.component';\nimport {\n  SebWizardStepLabelDescDirective,\n  SebWizardStepLabelDirective,\n} from './wizard-step-label.directive';\n\n@NgModule({\n  imports: [CommonModule],\n  declarations: [\n    SebWizardComponent,\n    SebWizardTitleDirective,\n    SebWizardStepComponent,\n    SebWizardStepLabelDirective,\n    SebWizardStepLabelDescDirective,\n  ],\n  exports: [\n    SebWizardComponent,\n    SebWizardTitleDirective,\n    SebWizardStepComponent,\n    SebWizardStepLabelDirective,\n    SebWizardStepLabelDescDirective,\n  ],\n})\nexport class SebWizardModule {}\n"
 
 /***/ }),
 
@@ -478,6 +1516,50 @@ module.exports = "<!--\ntitle: Modal\ncomponentid: component-modal\nvariantid: c
 /***/ (function(module, exports) {
 
 module.exports = "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-modal',\n  templateUrl: './modal.component.html',\n  styleUrls: ['./modal.component.scss']\n})\nexport class ModalComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit() {\n  }\n\n}\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.html":
+/*!****************************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.html ***!
+  \****************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<form [formGroup]=\"wizardFormGroup\" class=\"h-100\">\n  <seb-wizard stepWise #wizard>\n    <ng-template sebWizardTitle>Wizard Title</ng-template>\n    <seb-wizard-step [stepControl]=\"wizardFormGroup.get('step1')\">\n      <ng-template sebWizardStepLabel\n        >Step 1\n        <ng-container *sebWizardStepLabelDesc=\"let wizard\">\n          Displaying {{ wizard.currentStep }} of {{ wizard.totalSteps }}\n        </ng-container>\n      </ng-template>\n      <div class=\"d-flex flex-column h-100\" formGroupName=\"step1\">\n        Headline\n        <h2>Content of step 1</h2>\n        <div class=\"form-row\">\n          <div class=\"col-auto\">\n            <label for=\"name\">Name</label>\n            <input\n              sebAutofocus\n              class=\"form-control col-auto\"\n              id=\"name\"\n              placeholder=\"Fill out your name\"\n              type=\"text\"\n              formControlName=\"name\"\n              [class.is-invalid]=\"wizardFormGroup.get('step1.name').invalid\"\n            />\n            <div\n              class=\"invalid-feedback\"\n              *ngIf=\"wizardFormGroup.get('step1.name').invalid\"\n            >\n              Please provide a name.\n            </div>\n          </div>\n        </div>\n        <div class=\"mt-auto d-flex flex-row\">\n          <button\n            seb-btn\n            (click)=\"wizard.next()\"\n            class=\"ml-auto\"\n            [disabled]=\"wizardFormGroup.get('step1').invalid\"\n          >\n            Next\n          </button>\n        </div>\n      </div>\n    </seb-wizard-step>\n    <seb-wizard-step [stepControl]=\"wizardFormGroup.get('step2')\">\n      <ng-template sebWizardStepLabel\n        >Step 2\n        <ng-container *sebWizardStepLabelDesc=\"let wizard\">\n          Displaying {{ wizard.currentStep }} of {{ wizard.totalSteps }}\n        </ng-container>\n      </ng-template>\n      <div class=\"d-flex flex-column h-100\" formGroupName=\"step2\">\n        Headline\n        <h2>Content of step 2</h2>\n        <div class=\"form-row\">\n          <div class=\"col-auto\">\n            <label for=\"address\">Address</label>\n            <input\n              class=\"form-control col-auto\"\n              id=\"address\"\n              placeholder=\"Fill out your address\"\n              type=\"text\"\n              formControlName=\"address\"\n              [class.is-invalid]=\"wizardFormGroup.get('step2.address').invalid\"\n            />\n            <div\n              class=\"invalid-feedback\"\n              *ngIf=\"wizardFormGroup.get('step2.address').invalid\"\n            >\n              Please provide a address.\n            </div>\n          </div>\n        </div>\n        <div class=\"mt-auto d-flex flex-row\">\n          <button seb-btn outline (click)=\"wizard.previous()\">Previous</button>\n          <button\n            seb-btn\n            (click)=\"wizard.next()\"\n            class=\"ml-auto\"\n            [disabled]=\"wizardFormGroup.get('step2').invalid\"\n          >\n            Next\n          </button>\n        </div>\n      </div>\n    </seb-wizard-step>\n    <seb-wizard-step [stepControl]=\"wizardFormGroup.get('step3')\">\n      <ng-template sebWizardStepLabel\n        >Step 3\n        <ng-container *sebWizardStepLabelDesc=\"let wizard\">\n          Displaying {{ wizard.currentStep }} of {{ wizard.totalSteps }}\n        </ng-container>\n      </ng-template>\n      <div class=\"d-flex flex-column h-100\" formGroupName=\"step3\">\n        Headline\n        <h2>Content of step 3</h2>\n        <div class=\"form-row\">\n          <div class=\"col-auto\">\n            <label for=\"age\">Age</label>\n            <input\n              class=\"form-control col-auto\"\n              id=\"age\"\n              placeholder=\"Fill out your age\"\n              type=\"number\"\n              formControlName=\"age\"\n              [class.is-invalid]=\"wizardFormGroup.get('step3.age').invalid\"\n            />\n            <div\n              class=\"invalid-feedback\"\n              *ngIf=\"wizardFormGroup.get('step3.age').invalid\"\n            >\n              Please provide your age.\n            </div>\n          </div>\n        </div>\n        <div class=\"mt-auto d-flex flex-row\">\n          <button seb-btn outline (click)=\"wizard.previous()\">Previous</button>\n          <button\n            seb-btn\n            (click)=\"wizard.next()\"\n            class=\"ml-auto\"\n            [disabled]=\"wizardFormGroup.get('step3').invalid\"\n          >\n            Next\n          </button>\n        </div>\n      </div>\n    </seb-wizard-step>\n    <seb-wizard-step [stepControl]=\"wizardFormGroup.get('step4')\">\n      <ng-template sebWizardStepLabel\n        >Step 4\n        <ng-container *sebWizardStepLabelDesc=\"let wizard\">\n          Displaying {{ wizard.currentStep }} of {{ wizard.totalSteps }}\n        </ng-container>\n      </ng-template>\n      <div class=\"d-flex flex-column h-100\" formGroupName=\"step4\">\n        Headline\n        <h2>Content of step 4</h2>\n        <div class=\"form-row\">\n          <div class=\"col-auto\">\n            <div class=\"custom-control custom-checkbox\">\n              <input\n                class=\"custom-control-input\"\n                formControlName=\"confirm\"\n                id=\"confirm\"\n                type=\"checkbox\"\n                [class.is-invalid]=\"\n                  wizardFormGroup.get('step4.confirm').invalid\n                \"\n              />\n              <label class=\"custom-control-label\" for=\"confirm\"\n                >Agree to terms and conditions</label\n              >\n              <div\n                class=\"invalid-feedback\"\n                *ngIf=\"wizardFormGroup.get('step4.confirm').invalid\"\n              >\n                You must agree.\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class=\"mt-auto d-flex flex-row\">\n          <button seb-btn outline (click)=\"wizard.previous()\" size=\"sm\">\n            Previous\n          </button>\n          <button\n            seb-btn\n            (click)=\"wizard.reset()\"\n            class=\"ml-auto\"\n            [disabled]=\"wizardFormGroup.get('step4').invalid\"\n          >\n            Reset\n          </button>\n        </div>\n      </div>\n    </seb-wizard-step>\n  </seb-wizard>\n</form>\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts":
+/*!**************************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts ***!
+  \**************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "import { Component, OnInit } from '@angular/core';\nimport { FormControl, FormGroup, Validators } from '@angular/forms';\n\n@Component({\n  templateUrl: 'wizard-forms.component.html',\n})\nexport class WizardFormsComponent implements OnInit {\n  public wizardFormGroup: FormGroup;\n\n  constructor() {\n    this.wizardFormGroup = new FormGroup({\n      step1: new FormGroup({\n        name: new FormControl('', Validators.required),\n      }),\n      step2: new FormGroup({\n        address: new FormControl('', Validators.required),\n      }),\n      step3: new FormGroup({\n        age: new FormControl('', Validators.required),\n      }),\n      step4: new FormGroup({\n        confirm: new FormControl('', Validators.required),\n      }),\n    });\n  }\n\n  ngOnInit() {}\n}\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard/wizard.component.html":
+/*!****************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!./src/app/examples/components/wizard/examples/wizard/wizard.component.html ***!
+  \****************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h3>Launch wizard (forms)</h3>\n<button seb-btn outline (click)=\"launchWizardForms()\" size=\"sm\">Launch</button>\n"
+
+/***/ }),
+
+/***/ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard/wizard.component.ts":
+/*!**************************************************************************************************************************************************!*\
+  !*** /home/travis/build/sebgroup/ng-components/node_modules/raw-loader!./src/app/examples/components/wizard/examples/wizard/wizard.component.ts ***!
+  \**************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "import { Component, OnInit } from '@angular/core';\nimport { SebModalService } from '../../../../../../../../../lib/src/modal';\nimport { WizardFormsComponent } from '../wizard-forms/wizard-forms.component';\n\n@Component({\n  templateUrl: 'wizard.component.html',\n})\nexport class WizardComponent {\n  constructor(private modal: SebModalService) {}\n\n  public launchWizardForms() {\n    this.modal.open(WizardFormsComponent, { type: 'fullscreen' });\n  }\n}\n"
 
 /***/ }),
 
@@ -748,7 +1830,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "../../node_modules/@angular/router/fesm2015/router.js");
 /* harmony import */ var _examples_components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./examples/components/buttons/buttons.module */ "./src/app/examples/components/buttons/buttons.module.ts");
 /* harmony import */ var _examples_components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./examples/components/modal/modal.module */ "./src/app/examples/components/modal/modal.module.ts");
-/* harmony import */ var _components_installation_installation_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/installation/installation.component */ "./src/app/components/installation/installation.component.ts");
+/* harmony import */ var _examples_components_wizard_wizard_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./examples/components/wizard/wizard.module */ "./src/app/examples/components/wizard/wizard.module.ts");
+/* harmony import */ var _components_installation_installation_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/installation/installation.component */ "./src/app/components/installation/installation.component.ts");
+
 
 
 
@@ -759,40 +1843,52 @@ const routes = [
     {
         path: 'get-started',
         data: {
-            icon: 'home'
+            icon: 'home',
         },
-        children: [{
+        children: [
+            {
                 path: '',
                 redirectTo: 'install',
-                pathMatch: 'full'
-            }, {
+                pathMatch: 'full',
+            },
+            {
                 path: 'installation',
-                component: _components_installation_installation_component__WEBPACK_IMPORTED_MODULE_5__["InstallationComponent"]
-            }]
-    }, {
+                component: _components_installation_installation_component__WEBPACK_IMPORTED_MODULE_6__["InstallationComponent"],
+            },
+        ],
+    },
+    {
         path: 'components',
         data: {
-            icon: 'cubes'
+            icon: 'cubes',
         },
-        children: [{
+        children: [
+            {
                 path: '',
                 redirectTo: 'buttons',
-                pathMatch: 'full'
-            }, {
+                pathMatch: 'full',
+            },
+            {
                 path: 'buttons',
-                children: _examples_components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__["ROUTES"]
-            }, {
+                children: _examples_components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__["ROUTES"],
+            },
+            {
                 path: 'modal',
-                children: _examples_components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__["ROUTES"]
-            }]
-    }
+                children: _examples_components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__["ROUTES"],
+            },
+            {
+                path: 'wizard',
+                children: _examples_components_wizard_wizard_module__WEBPACK_IMPORTED_MODULE_5__["ROUTES"],
+            },
+        ],
+    },
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
 AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
         imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes)],
-        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
+        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]],
     })
 ], AppRoutingModule);
 
@@ -2208,6 +3304,201 @@ ModalModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
+/***/ "./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts":
+/*!********************************************************************************************!*\
+  !*** ./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts ***!
+  \********************************************************************************************/
+/*! exports provided: WizardFormsComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WizardFormsComponent", function() { return WizardFormsComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "../../node_modules/@angular/forms/fesm2015/forms.js");
+
+
+
+let WizardFormsComponent = class WizardFormsComponent {
+    constructor() {
+        this.wizardFormGroup = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+            step1: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+                name: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
+            }),
+            step2: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+                address: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
+            }),
+            step3: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+                age: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
+            }),
+            step4: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
+                confirm: new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
+            }),
+        });
+    }
+    ngOnInit() { }
+};
+WizardFormsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./wizard-forms.component.html */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.html")).default,
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+], WizardFormsComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/examples/components/wizard/examples/wizard/wizard.component.ts":
+/*!********************************************************************************!*\
+  !*** ./src/app/examples/components/wizard/examples/wizard/wizard.component.ts ***!
+  \********************************************************************************/
+/*! exports provided: WizardComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WizardComponent", function() { return WizardComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _lib_src_modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../../../lib/src/modal */ "../../lib/src/modal/index.ts");
+/* harmony import */ var _wizard_forms_wizard_forms_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../wizard-forms/wizard-forms.component */ "./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts");
+
+
+
+
+let WizardComponent = class WizardComponent {
+    constructor(modal) {
+        this.modal = modal;
+    }
+    launchWizardForms() {
+        this.modal.open(_wizard_forms_wizard_forms_component__WEBPACK_IMPORTED_MODULE_3__["WizardFormsComponent"], { type: 'fullscreen' });
+    }
+};
+WizardComponent.ctorParameters = () => [
+    { type: _lib_src_modal__WEBPACK_IMPORTED_MODULE_2__["SebModalService"] }
+];
+WizardComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./wizard.component.html */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard/wizard.component.html")).default,
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_lib_src_modal__WEBPACK_IMPORTED_MODULE_2__["SebModalService"]])
+], WizardComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/examples/components/wizard/wizard.module.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/examples/components/wizard/wizard.module.ts ***!
+  \*************************************************************/
+/*! exports provided: ROUTES, WizardModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ROUTES", function() { return ROUTES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WizardModule", function() { return WizardModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../../node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
+/* harmony import */ var _components_example_page_example_page_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/example-page/example-page.component */ "./src/app/components/example-page/example-page.component.ts");
+/* harmony import */ var _components_example_page_example_list_example_list_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/example-page/example-list/example-list.component */ "./src/app/components/example-page/example-list/example-list.component.ts");
+/* harmony import */ var _components_example_page_api_list_api_list_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/example-page/api-list/api-list.component */ "./src/app/components/example-page/api-list/api-list.component.ts");
+/* harmony import */ var _examples_wizard_forms_wizard_forms_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./examples/wizard-forms/wizard-forms.component */ "./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "../../node_modules/@angular/forms/fesm2015/forms.js");
+/* harmony import */ var _lib_src_wizard__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../../../../lib/src/wizard */ "../../lib/src/wizard/index.ts");
+/* harmony import */ var _lib_src_button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../../../../lib/src/button */ "../../lib/src/button/index.ts");
+/* harmony import */ var _lib_src_modal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../../../../lib/src/modal */ "../../lib/src/modal/index.ts");
+/* harmony import */ var _examples_wizard_wizard_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./examples/wizard/wizard.component */ "./src/app/examples/components/wizard/examples/wizard/wizard.component.ts");
+
+
+
+
+
+
+
+
+
+
+
+
+const ROUTES = [
+    { path: '', pathMatch: 'full', redirectTo: 'examples' },
+    {
+        path: '',
+        component: _components_example_page_example_page_component__WEBPACK_IMPORTED_MODULE_3__["ExamplePageComponent"],
+        children: [
+            {
+                path: 'examples',
+                component: _components_example_page_example_list_example_list_component__WEBPACK_IMPORTED_MODULE_4__["ExampleListComponent"],
+                children: [
+                    {
+                        path: 'wizard',
+                        component: _examples_wizard_wizard_component__WEBPACK_IMPORTED_MODULE_11__["WizardComponent"],
+                        data: {
+                            title: 'Wizard',
+                            description: 'Additional description for example (optional)',
+                            sources: [
+                                {
+                                    name: 'wizard.component.html',
+                                    src: __webpack_require__(/*! raw-loader!./examples/wizard/wizard.component.html */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard/wizard.component.html"),
+                                    lang: 'markup',
+                                },
+                                {
+                                    name: 'wizard.component.ts',
+                                    src: __webpack_require__(/*! raw-loader!./examples/wizard/wizard.component.ts */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard/wizard.component.ts"),
+                                    lang: 'ts',
+                                },
+                                {
+                                    name: 'wizard-forms.component.html',
+                                    src: __webpack_require__(/*! raw-loader!./examples/wizard-forms/wizard-forms.component.html */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.html"),
+                                    lang: 'markup',
+                                },
+                                {
+                                    name: 'wizard-forms.component.ts',
+                                    src: __webpack_require__(/*! raw-loader!./examples/wizard-forms/wizard-forms.component.ts */ "../../node_modules/raw-loader/index.js!./src/app/examples/components/wizard/examples/wizard-forms/wizard-forms.component.ts"),
+                                    lang: 'ts',
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+            {
+                path: 'api',
+                component: _components_example_page_api_list_api_list_component__WEBPACK_IMPORTED_MODULE_5__["ApiListComponent"],
+                data: {
+                    sources: [
+                        __webpack_require__(/*! raw-loader!../../../../../../../lib/src/wizard/wizard.module.ts */ "../../node_modules/raw-loader/index.js!../../lib/src/wizard/wizard.module.ts"),
+                    ],
+                },
+            },
+        ],
+    },
+];
+let WizardModule = class WizardModule {
+};
+WizardModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+        declarations: [_examples_wizard_forms_wizard_forms_component__WEBPACK_IMPORTED_MODULE_6__["WizardFormsComponent"], _examples_wizard_wizard_component__WEBPACK_IMPORTED_MODULE_11__["WizardComponent"]],
+        imports: [
+            _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_7__["ReactiveFormsModule"],
+            _lib_src_wizard__WEBPACK_IMPORTED_MODULE_8__["SebWizardModule"],
+            _lib_src_button__WEBPACK_IMPORTED_MODULE_9__["SebButtonModule"],
+            _lib_src_modal__WEBPACK_IMPORTED_MODULE_10__["SebModalModule"],
+        ],
+        entryComponents: [_examples_wizard_forms_wizard_forms_component__WEBPACK_IMPORTED_MODULE_6__["WizardFormsComponent"]],
+    })
+], WizardModule);
+
+
+
+/***/ }),
+
 /***/ "./src/app/examples/examples.module.ts":
 /*!*********************************************!*\
   !*** ./src/app/examples/examples.module.ts ***!
@@ -2223,6 +3514,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "../../node_modules/@angular/common/fesm2015/common.js");
 /* harmony import */ var _components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/buttons/buttons.module */ "./src/app/examples/components/buttons/buttons.module.ts");
 /* harmony import */ var _components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/modal/modal.module */ "./src/app/examples/components/modal/modal.module.ts");
+/* harmony import */ var _components_wizard_wizard_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/wizard/wizard.module */ "./src/app/examples/components/wizard/wizard.module.ts");
+
 
 
 
@@ -2233,11 +3526,7 @@ let ExamplesModule = class ExamplesModule {
 ExamplesModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
         declarations: [],
-        imports: [
-            _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
-            _components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__["ButtonsModule"],
-            _components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__["ModalModule"]
-        ]
+        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"], _components_buttons_buttons_module__WEBPACK_IMPORTED_MODULE_3__["ButtonsModule"], _components_modal_modal_module__WEBPACK_IMPORTED_MODULE_4__["ModalModule"], _components_wizard_wizard_module__WEBPACK_IMPORTED_MODULE_5__["WizardModule"]],
     })
 ], ExamplesModule);
 
