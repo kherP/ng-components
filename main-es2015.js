@@ -2149,7 +2149,7 @@ let ApiListComponent = ApiListComponent_1 = class ApiListComponent {
         const obs = sources.reduce((previous, current) => {
             return [...previous, this.parseSourceFile(current)];
         }, []);
-        this.$content = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"])(...obs).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["reduce"])(([previous, current]) => [...previous, ...current], []));
+        this.$content = Object(rxjs__WEBPACK_IMPORTED_MODULE_2__["merge"])(...obs).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["reduce"])((previous, current) => [...previous, ...current], []));
     }
     parseSourceFile(source) {
         const description = ApiListComponent_1.extractDescription(source);
@@ -2239,7 +2239,7 @@ let ApiListComponent = ApiListComponent_1 = class ApiListComponent {
     }
     static extractDescription(sourceCode) {
         const regex = /(?:\/\*\*(?<comment>[\s\S][^\/]*)\*\/[^\w])/;
-        console.log(regex.exec(sourceCode));
+        console.log(sourceCode, regex.exec(sourceCode));
         return regex.exec(sourceCode);
     }
     parseInputs(accessors, inputs) {
